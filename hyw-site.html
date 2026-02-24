@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hudson Yards Wellness — Urban Vitality Redefined</title>
+<meta name="description" content="New York's premier wellness ecosystem at Hudson Yards. Elite fitness, personalized wellness paths, and luxury recovery — curated for the modern urban life.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TOKENS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  --black:      #080806;
+  --offwhite:   #f4f1ea;
+  --gold:       #c8a24a;
+  --gold-light: #e2c97e;
+  --gold-dim:   rgba(200,162,74,0.16);
+  --stone:      #201e1b;
+  --mist:       #8a857c;
+  --rule:       rgba(200,162,74,0.13);
+  /* Grain SVG data-uri for paper texture */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.045'/%3E%3C/svg%3E");
+}
+
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  background: var(--black);
+  color: var(--offwhite);
+  font-family: 'Jost', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  /* Cursor hidden only after JS confirms — see .js-cursor-active below */
+}
+
+/* Grain overlay on dark sections */
+body::before {
+  content:'';
+  position:fixed; inset:0; pointer-events:none; z-index:1;
+  background-image: var(--grain);
+  background-size: 200px 200px;
+  opacity: 1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   CURSOR — safe fallback pattern
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+/* Only hide native cursor on hover-capable devices AND once JS active */
+@media (hover: hover) {
+  .js-cursor-active,
+  .js-cursor-active * { cursor: none !important; }
+}
+
+#cur  {
+  position:fixed; width:7px; height:7px;
+  background:var(--gold); border-radius:50%;
+  pointer-events:none; z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform .12s ease, background .2s ease;
+  opacity:0; /* hidden until JS places it */
+}
+#ring {
+  position:fixed; width:34px; height:34px;
+  border:1px solid rgba(200,162,74,.35); border-radius:50%;
+  pointer-events:none; z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:width .25s ease, height .25s ease, border-color .25s ease, opacity .3s ease;
+  opacity:0;
+}
+/* Hover state — enlarged ring */
+#cur.is-hover  { transform:translate(-50%,-50%) scale(0); background:transparent; }
+#ring.is-hover { width:52px; height:52px; border-color:rgba(200,162,74,.65); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   NAV
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  padding:26px 52px;
+  display:flex; align-items:center; justify-content:space-between;
+  transition: background .4s ease;
+}
+nav.scrolled { background:rgba(8,8,6,.97); }
+nav::after {
+  content:''; position:absolute; inset:0;
+  background:linear-gradient(to bottom,rgba(8,8,6,.88) 0%,transparent 100%);
+  pointer-events:none; z-index:0;
+  transition:opacity .4s;
+}
+nav.scrolled::after { opacity:0; }
+
+.nav-logo {
+  font-family:'Cormorant Garamond',serif; font-size:1.05rem; font-weight:300;
+  letter-spacing:.22em; text-transform:uppercase; color:var(--offwhite);
+  text-decoration:none; position:relative; z-index:1;
+}
+.nav-logo b { color:var(--gold); font-weight:300; }
+
+.nav-links { display:flex; gap:38px; list-style:none; position:relative; z-index:1; }
+.nav-links a {
+  font-size:.68rem; letter-spacing:.17em; text-transform:uppercase;
+  color:var(--mist); text-decoration:none; transition:color .3s;
+  position:relative;
+}
+.nav-links a::after {
+  content:''; position:absolute; left:0; bottom:-3px; width:0; height:1px;
+  background:var(--gold); transition:width .3s ease;
+}
+.nav-links a:hover { color:var(--gold); }
+.nav-links a:hover::after { width:100%; }
+
+.nav-cta {
+  position:relative; z-index:1;
+  font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--black); background:var(--gold); padding:11px 26px;
+  text-decoration:none; transition:background .3s;
+}
+.nav-cta:hover { background:var(--gold-light); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HERO
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.hero {
+  height:100vh; display:flex; align-items:flex-end;
+  padding:0 52px 88px; position:relative; overflow:hidden;
+}
+.hero-bg {
+  position:absolute; inset:0;
+  background:
+    radial-gradient(ellipse 90% 55% at 65% 25%, rgba(200,162,74,.07) 0%,transparent 60%),
+    radial-gradient(ellipse 45% 45% at 18% 78%, rgba(180,140,90,.05) 0%,transparent 55%),
+    linear-gradient(160deg,#080806 0%,#171410 45%,#0c0b09 100%);
+}
+.hero-grid {
+  position:absolute; inset:0;
+  background-image:
+    linear-gradient(rgba(200,162,74,.032) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(200,162,74,.032) 1px,transparent 1px);
+  background-size:88px 88px;
+  mask-image:linear-gradient(to bottom,transparent 0%,black 22%,black 70%,transparent 100%);
+  will-change: transform;
+}
+.hero-vline {
+  position:absolute; right:110px; top:0; bottom:0; width:1px;
+  background:linear-gradient(to bottom,transparent,rgba(200,162,74,.26) 28%,rgba(200,162,74,.26) 72%,transparent);
+  will-change: transform;
+}
+.hero-vline::after {
+  content:''; position:absolute; right:-44px; top:0; bottom:0; width:1px;
+  background:linear-gradient(to bottom,transparent,rgba(200,162,74,.09) 38%,rgba(200,162,74,.09) 62%,transparent);
+}
+
+.hero-content { position:relative; z-index:2; max-width:920px; }
+
+.hero-eyebrow {
+  font-size:clamp(.58rem,.65rem + .1vw,.72rem);
+  letter-spacing:.32em; text-transform:uppercase; color:var(--gold); margin-bottom:22px;
+  opacity:0; animation:fadeUp 1s .3s forwards;
+}
+.hero-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(3.8rem,8.5vw,9.8rem);
+  font-weight:300; line-height:.88; letter-spacing:-.02em;
+  margin-bottom:44px;
+  opacity:0; animation:fadeUp 1.2s .5s forwards;
+}
+.hero-title em { font-style:italic; color:var(--gold); }
+.hero-meta {
+  display:flex; align-items:center; gap:52px;
+  opacity:0; animation:fadeUp 1s .85s forwards;
+}
+.hero-desc { font-size:.84rem; line-height:1.75; color:var(--mist); max-width:370px; }
+
+.hero-cta {
+  display:inline-flex; align-items:center; gap:14px; white-space:nowrap;
+  font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--offwhite); text-decoration:none;
+  border-bottom:1px solid var(--gold); padding-bottom:9px;
+  transition:color .3s;
+}
+.hero-cta svg { transition:transform .3s; }
+.hero-cta:hover { color:var(--gold); }
+.hero-cta:hover svg { transform:translateX(7px); }
+
+.scroll-ind {
+  position:absolute; right:52px; bottom:88px;
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+  opacity:0; animation:fadeIn 1s 1.3s forwards;
+}
+.scroll-ind span {
+  font-size:.58rem; letter-spacing:.28em; text-transform:uppercase;
+  color:var(--mist); writing-mode:vertical-rl;
+}
+.scroll-line {
+  width:1px; height:64px;
+  background:linear-gradient(to bottom,var(--gold),transparent);
+  animation:linePulse 2.2s ease-in-out infinite;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   MARQUEE — JS-driven speed
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.marquee-wrap {
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  padding:18px 0; overflow:hidden; background:var(--stone);
+  position:relative;
+}
+.marquee-track {
+  display:flex; gap:72px; white-space:nowrap;
+  /* Duration set by JS for viewport-relative speed */
+  animation:marquee var(--marquee-dur, 22s) linear infinite;
+}
+.marquee-item {
+  font-family:'Cormorant Garamond',serif; font-size:.82rem;
+  letter-spacing:.28em; text-transform:uppercase; color:var(--gold); opacity:.65;
+  display:flex; align-items:center; gap:72px;
+}
+.marquee-item::after { content:'◆'; font-size:.48rem; opacity:.45; }
+.marquee-wrap:hover .marquee-track { animation-play-state:paused; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SHARED SECTION UTILITIES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.eyebrow {
+  font-size:clamp(.58rem,.63rem + .05vw,.7rem);
+  letter-spacing:.3em; text-transform:uppercase; color:var(--gold); margin-bottom:14px;
+}
+.section-title {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2.4rem,4.8vw,5.2rem); font-weight:300; line-height:.97;
+}
+.section-title em { font-style:italic; color:var(--gold); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SERVICE CARDS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.services { padding:148px 52px; }
+.services-header { margin-bottom:72px; }
+.services-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:3px; }
+
+.service-card {
+  position:relative; aspect-ratio:3/4.2; overflow:hidden;
+}
+.service-card-photo {
+  position:absolute; inset:0;
+  transition:transform .9s cubic-bezier(.16,1,.3,1);
+  will-change: transform; /* GPU layer */
+}
+.service-card:hover .service-card-photo { transform:scale(1.06); }
+
+/* ── Card 1: Recovery Chamber */
+.card-chamber {
+  background:
+    radial-gradient(ellipse 55% 70% at 75% 40%, rgba(195,28,10,.55) 0%,rgba(120,15,5,.3) 35%,transparent 65%),
+    radial-gradient(ellipse 30% 50% at 25% 55%, rgba(60,45,30,.8) 0%,transparent 60%),
+    linear-gradient(175deg,#1a1108 0%,#261810 30%,#180d08 60%,#1c1410 100%);
+}
+.card-chamber::after {
+  content:''; position:absolute; top:12%; right:12%; width:30%; height:62%;
+  background-image:
+    radial-gradient(circle 3px at 50% 50%,rgba(220,35,12,.9),transparent),
+    radial-gradient(circle 3px at 50% 50%,rgba(220,35,12,.9),transparent);
+  background-size:16px 20px; background-position:0 0,8px 10px;
+  box-shadow:0 0 40px rgba(195,28,10,.4),0 0 80px rgba(195,28,10,.2);
+}
+
+/* ── Card 2: Pilates Studio */
+.card-pilates {
+  background:
+    radial-gradient(ellipse 80% 40% at 50% 45%, rgba(230,185,95,.22) 0%,rgba(190,145,65,.12) 35%,transparent 65%),
+    radial-gradient(ellipse 60% 50% at 50% 60%, rgba(180,155,100,.15) 0%,transparent 55%),
+    linear-gradient(170deg,#2a2218 0%,#1e1912 25%,#2c2418 50%,#1a1510 100%);
+}
+
+/* ── Card 3: Spa */
+.card-spa {
+  background:
+    radial-gradient(ellipse 50% 55% at 18% 72%, rgba(28,38,55,.95) 0%,rgba(18,28,45,.8) 40%,transparent 65%),
+    radial-gradient(ellipse 50% 40% at 70% 50%, rgba(195,145,80,.25) 0%,rgba(150,105,55,.15) 40%,transparent 65%),
+    linear-gradient(165deg,#1a1710 0%,#141210 30%,#0e1118 55%,#181410 100%);
+}
+
+.scene-elements { position:absolute; inset:0; overflow:hidden; }
+.beam {
+  position:absolute; left:0; right:0; height:18px;
+  background:linear-gradient(to bottom,#7a4820,#5a3415,#7a4820);
+}
+.beam::before {
+  content:''; position:absolute; top:0; left:0; right:0; height:3px; background:#9a5e2a;
+}
+.city-window { position:absolute; border:3px solid #3a3020; overflow:hidden; }
+.city-window-sky { position:absolute; inset:0; background:linear-gradient(to bottom,#e8b060 0%,#d4854a 30%,#9a6040 55%,#4a3828 100%); }
+.city-window-buildings {
+  position:absolute; bottom:0; left:0; right:0; height:55%;
+  background:
+    linear-gradient(to top,#1a1410 0%,#1a1410 100%) 5% 0/12% 75%,
+    linear-gradient(to top,#1e1812 0%,#1e1812 100%) 19% 0/10% 90%,
+    linear-gradient(to top,#181210 0%,#181210 100%) 31% 0/11% 70%,
+    linear-gradient(to top,#1c1610 0%,#1c1610 100%) 44% 0/12% 85%,
+    linear-gradient(to top,#1a1410 0%,#1a1410 100%) 58% 0/10% 68%,
+    linear-gradient(to top,#201a14 0%,#201a14 100%) 70% 0/13% 80%,
+    linear-gradient(to top,#1a1410 0%,#1a1410 100%) 85% 0/12% 72%;
+  background-repeat:no-repeat;
+}
+.floor {
+  position:absolute; bottom:0; left:0; right:0;
+  background:linear-gradient(to top,#c8a878,#b89060);
+}
+.floor::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:rgba(200,162,74,.2); }
+.floor::after {
+  content:''; position:absolute; inset:0;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 18px,rgba(0,0,0,.12) 18px,rgba(0,0,0,.12) 19px);
+}
+.lounger {
+  position:absolute; width:22%; height:14%;
+  background:linear-gradient(135deg,#d8c8b0,#c4b09a); border-radius:3px 3px 1px 1px;
+  box-shadow:0 4px 12px rgba(0,0,0,.5);
+}
+.lounger::before { content:''; position:absolute; top:-8px; left:10%; right:10%; height:10px; background:#e0d0b8; border-radius:2px; }
+.lounger::after  { content:''; position:absolute; bottom:-8px; left:8%; right:8%; height:4px; background:rgba(0,0,0,.4); border-radius:1px; }
+.reformer {
+  position:absolute; width:55%; height:10%;
+  background:linear-gradient(to bottom,#c0a888,#a89070); border-radius:2px;
+  box-shadow:0 3px 10px rgba(0,0,0,.6);
+}
+.reformer::before { content:''; position:absolute; right:12%; top:-25%; width:6%; height:125%; background:#7a5a38; border-radius:1px; }
+.pool { position:absolute; left:0; bottom:0; width:45%; top:42%; background:linear-gradient(to bottom,#1e2830,#141c28); overflow:hidden; }
+.pool::before { content:''; position:absolute; top:0; left:0; right:0; height:4px; background:#c0a880; }
+.pool::after {
+  content:''; position:absolute; inset:0;
+  background:
+    linear-gradient(100deg,transparent 20%,rgba(200,170,100,.08) 35%,transparent 50%) 0 15%/100% 8px no-repeat,
+    linear-gradient(100deg,transparent 30%,rgba(200,170,100,.06) 55%,transparent 70%) 0 35%/100% 6px no-repeat,
+    linear-gradient(100deg,transparent 10%,rgba(200,170,100,.05) 40%,transparent 60%) 0 55%/100% 5px no-repeat;
+}
+
+/* Card content overlay */
+.card-overlay {
+  position:absolute; bottom:0; left:0; right:0; padding:44px 38px;
+  background:linear-gradient(to top,rgba(8,8,6,.97) 0%,rgba(8,8,6,.7) 55%,transparent 100%);
+  transform:translateY(12px); transition:transform .55s cubic-bezier(.16,1,.3,1);
+}
+.service-card:hover .card-overlay { transform:translateY(0); }
+
+.card-num { font-size:.58rem; letter-spacing:.3em; color:var(--gold); margin-bottom:10px; }
+.card-title {
+  font-family:'Cormorant Garamond',serif; font-size:clamp(1.6rem,2.2vw,2rem);
+  font-weight:300; line-height:1.05; margin-bottom:10px;
+}
+.card-desc {
+  font-size:.78rem; line-height:1.65; color:var(--mist); max-width:260px;
+  opacity:0; transform:translateY(10px); transition:all .42s .1s;
+}
+.service-card:hover .card-desc { opacity:1; transform:translateY(0); }
+.card-link {
+  display:inline-flex; align-items:center; gap:8px; margin-top:18px;
+  font-size:.62rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--gold); text-decoration:none;
+  opacity:0; transform:translateY(8px); transition:all .42s .18s;
+}
+.service-card:hover .card-link { opacity:1; transform:translateY(0); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   STATS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.stats-row {
+  display:grid; grid-template-columns:repeat(4,1fr);
+  border-top:1px solid var(--rule);
+}
+.stat { padding:72px 44px; text-align:center; border-right:1px solid var(--rule); }
+.stat:last-child { border-right:none; }
+.stat-num {
+  font-family:'Cormorant Garamond',serif; font-size:clamp(3.2rem,4.5vw,4.8rem);
+  font-weight:300; color:var(--gold); line-height:1; margin-bottom:12px;
+}
+.stat-label { font-size:.66rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mist); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   WELLNESS PATH — interactive orbit
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.path-section {
+  padding:148px 52px; background:var(--stone);
+  position:relative; overflow:hidden;
+}
+.path-section::before {
+  content:''; position:absolute; top:-250px; right:-180px; width:620px; height:620px;
+  border-radius:50%; background:radial-gradient(circle,rgba(200,162,74,.05) 0%,transparent 68%);
+  pointer-events:none;
+}
+.path-section::after {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--grain); background-size:200px 200px; opacity:.6;
+}
+.path-inner {
+  display:grid; grid-template-columns:1fr 1fr; gap:110px; align-items:center;
+  position:relative; z-index:1;
+}
+.path-steps { display:flex; flex-direction:column; }
+.path-step {
+  display:flex; gap:28px; padding:36px 0;
+  border-bottom:1px solid var(--rule);
+  transition:opacity .3s ease;
+}
+.path-step:first-child { padding-top:0; }
+.path-step:last-child { border-bottom:none; padding-bottom:0; }
+
+/* When a sibling is "active" (via data-active on parent), dim others */
+.path-steps.has-active .path-step { opacity:.35; }
+.path-steps.has-active .path-step.is-active { opacity:1; }
+
+.step-num {
+  font-family:'Cormorant Garamond',serif; font-size:3.2rem; font-weight:300;
+  color:rgba(200,162,74,.18); line-height:1; min-width:64px;
+  transition: color .4s;
+}
+.path-step.is-active .step-num { color:rgba(200,162,74,.55); }
+
+.step-content h3 {
+  font-family:'Cormorant Garamond',serif; font-size:clamp(1.2rem,1.4vw,1.5rem); font-weight:400; margin-bottom:9px;
+}
+.step-content p { font-size:.8rem; line-height:1.7; color:var(--mist); }
+
+/* Orbital visual */
+.orbit-wrap {
+  position:relative; height:480px;
+  display:flex; align-items:center; justify-content:center;
+}
+.orbit {
+  position:absolute; border-radius:50%;
+  border:1px solid rgba(200,162,74,.18);
+  will-change: transform; /* GPU composite */
+}
+.orbit-1 { width:320px; height:320px; animation:spin 28s linear infinite; }
+.orbit-2 { width:220px; height:220px; animation:spin 20s linear infinite reverse; border-color:rgba(200,162,74,.12); }
+.orbit-3 { width:420px; height:420px; animation:spin 38s linear infinite; border-color:rgba(200,162,74,.08); }
+
+/* Orbit dots — one per step, interactive */
+.orbit-dot {
+  position:absolute; width:10px; height:10px;
+  background:rgba(200,162,74,.45); border-radius:50%;
+  box-shadow:0 0 12px rgba(200,162,74,.3);
+  transition: background .4s ease, box-shadow .4s ease, transform .4s ease;
+  cursor:pointer;
+}
+.orbit-dot[data-step="1"] { top:-5px; left:50%; margin-left:-5px; }
+.orbit-dot[data-step="2"] { bottom:-5px; left:50%; margin-left:-5px; }
+.orbit-dot[data-step="3"] { left:-5px; top:50%; margin-top:-5px; }
+
+/* Active dot */
+.orbit-dot.is-active {
+  background:var(--gold);
+  box-shadow:0 0 0 4px rgba(200,162,74,.15), 0 0 22px rgba(200,162,74,.6);
+  transform:scale(1.5);
+}
+
+.orbit-center {
+  position:relative; z-index:2; text-align:center;
+  width:120px; height:120px; border-radius:50%;
+  border:1px solid rgba(200,162,74,.22);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  background:rgba(8,8,6,.8);
+}
+.orbit-center span {
+  font-family:'Cormorant Garamond',serif; font-size:1rem; font-style:italic; color:var(--gold); line-height:1.3;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PHASES — journey connectors
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.phases-section { padding:148px 52px; }
+.phases-grid {
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:0; margin-top:72px; position:relative;
+}
+/* Horizontal connector line between cards */
+.phases-grid::before {
+  content:''; position:absolute; top:52px; left:calc(33.33% + 22px); right:calc(33.33% + 22px);
+  height:1px; background:linear-gradient(to right,var(--gold),var(--gold));
+  opacity:.2; z-index:0;
+}
+/* Arrow dots on connector */
+.phases-grid::after {
+  content:''; position:absolute; top:46px;
+  left:50%; transform:translateX(-50%);
+  width:14px; height:14px; border-radius:50%;
+  background:var(--black); border:1px solid rgba(200,162,74,.35);
+  z-index:1;
+}
+
+.phase-card {
+  padding:52px 44px; border:1px solid var(--rule);
+  position:relative; z-index:1;
+  transition:background .3s, border-color .3s;
+}
+.phase-card + .phase-card { border-left:none; }
+.phase-card:hover { background:rgba(200,162,74,.04); border-color:rgba(200,162,74,.3); }
+
+/* Phase connector dot */
+.phase-card::before {
+  content:''; position:absolute; top:44px; right:-8px;
+  width:16px; height:16px; border-radius:50%;
+  background:var(--black); border:1px solid rgba(200,162,74,.25);
+  z-index:2;
+}
+.phase-card:last-child::before { display:none; }
+
+/* Active phase highlight */
+.phase-card.phase-active {
+  background:rgba(200,162,74,.05); border-color:rgba(200,162,74,.35);
+}
+.phase-card.phase-active::after {
+  content:''; position:absolute; top:0; left:0; right:0; height:2px;
+  background:linear-gradient(to right,var(--gold),rgba(200,162,74,.3));
+}
+
+.phase-num  { font-size:.58rem; letter-spacing:.3em; color:var(--gold); margin-bottom:12px; }
+.phase-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.3rem,1.7vw,1.6rem); font-weight:300; margin-bottom:8px; }
+.phase-duration {
+  font-size:.68rem; letter-spacing:.15em; text-transform:uppercase; color:var(--gold);
+  margin-bottom:20px; padding-bottom:20px; border-bottom:1px solid var(--rule);
+}
+.phase-items { display:flex; flex-direction:column; gap:10px; margin-top:4px; }
+.phase-item {
+  font-size:.8rem; line-height:1.55; color:var(--mist);
+  display:flex; gap:10px; align-items:flex-start;
+}
+.phase-item::before { content:'—'; color:var(--gold); opacity:.45; flex-shrink:0; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   BOOKING — multi-step form
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.booking-section {
+  padding:148px 52px;
+  display:grid; grid-template-columns:1fr 1fr; gap:120px; align-items:start;
+  background:var(--stone); position:relative;
+}
+.booking-section::before {
+  content:''; position:absolute; inset:0; pointer-events:none;
+  background-image:var(--grain); background-size:200px 200px; opacity:.5;
+}
+.booking-section > * { position:relative; z-index:1; }
+
+/* Multi-step form container */
+.form-wrap { position:relative; }
+
+/* Step progress bar */
+.form-progress {
+  display:flex; gap:0; margin-bottom:44px; border-bottom:1px solid var(--rule);
+  padding-bottom:28px;
+}
+.form-progress-step {
+  display:flex; flex-direction:column; gap:6px; flex:1;
+  font-size:.6rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mist);
+  transition:color .3s;
+  position:relative;
+}
+.form-progress-step::after {
+  content:''; position:absolute; bottom:-28px; left:0; width:0; height:1px;
+  background:var(--gold); transition:width .5s cubic-bezier(.16,1,.3,1);
+}
+.form-progress-step.is-done::after,
+.form-progress-step.is-current::after { width:100%; }
+.form-progress-step.is-current { color:var(--gold); }
+.form-progress-step.is-done { color:rgba(200,162,74,.5); }
+.form-step-dot {
+  width:6px; height:6px; border-radius:50%; background:currentColor;
+  transition:transform .3s, background .3s;
+}
+.form-progress-step.is-current .form-step-dot { transform:scale(1.6); }
+
+/* Form steps — show/hide */
+.form-step {
+  display:none; flex-direction:column; gap:0;
+  animation:stepIn .5s cubic-bezier(.16,1,.3,1) both;
+}
+.form-step.is-active { display:flex; }
+
+@keyframes stepIn {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+@keyframes stepOut {
+  from { opacity:1; transform:translateY(0); }
+  to   { opacity:0; transform:translateY(-16px); }
+}
+
+.form-step-question {
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.5rem,2.2vw,2rem); font-weight:300; color:var(--offwhite);
+  margin-bottom:28px; line-height:1.15;
+}
+.form-step-question em { font-style:italic; color:var(--gold); }
+
+.form-group { display:flex; flex-direction:column; gap:7px; }
+.form-group label {
+  font-size:.62rem; letter-spacing:.2em; text-transform:uppercase; color:var(--mist);
+}
+.form-group input,
+.form-group select {
+  background:rgba(255,255,255,.04); border:1px solid rgba(200,162,74,.18);
+  border-bottom:1px solid rgba(200,162,74,.4);
+  color:var(--offwhite); padding:13px 0;
+  font-family:'Jost',sans-serif; font-size:.92rem; font-weight:300;
+  outline:none; transition:border-color .3s;
+  -webkit-appearance:none;
+  /* Minimal — just bottom border for luxury feel */
+  background:transparent; border:none; border-bottom:1px solid rgba(200,162,74,.3);
+  border-radius:0;
+}
+.form-group input:focus,
+.form-group select:focus { border-bottom-color:var(--gold); }
+.form-group select option { background:#1a1810; }
+.form-group input::placeholder { color:rgba(138,133,124,.4); font-weight:300; }
+
+.form-row-inline { display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+
+/* Option cards (service selection) */
+.service-options {
+  display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-top:4px;
+}
+.service-option {
+  border:1px solid rgba(200,162,74,.18); padding:16px 18px;
+  cursor:pointer; transition:all .25s;
+  display:flex; flex-direction:column; gap:4px;
+}
+.service-option:hover { border-color:rgba(200,162,74,.4); background:rgba(200,162,74,.04); }
+.service-option.is-selected { border-color:var(--gold); background:rgba(200,162,74,.07); }
+.service-option-name { font-size:.82rem; color:var(--offwhite); }
+.service-option-sub  { font-size:.66rem; letter-spacing:.12em; text-transform:uppercase; color:var(--mist); }
+
+/* Nav buttons */
+.form-nav { display:flex; align-items:center; justify-content:space-between; margin-top:38px; }
+.form-btn-next {
+  background:var(--gold); color:var(--black); border:none;
+  padding:15px 34px; font-family:'Jost',sans-serif;
+  font-size:.68rem; letter-spacing:.2em; text-transform:uppercase;
+  transition:background .3s; flex-shrink:0;
+}
+.form-btn-next:hover { background:var(--gold-light); }
+.form-btn-back {
+  background:none; border:none; color:var(--mist);
+  font-family:'Jost',sans-serif; font-size:.66rem; letter-spacing:.18em;
+  text-transform:uppercase; transition:color .3s; padding:0;
+}
+.form-btn-back:hover { color:var(--offwhite); }
+.form-btn-back:disabled { opacity:0; pointer-events:none; }
+
+.form-note { font-size:.72rem; color:var(--mist); line-height:1.55; margin-top:28px; }
+
+/* Confirmation state */
+.form-confirmation {
+  display:none; flex-direction:column; align-items:flex-start; gap:16px;
+  animation:stepIn .6s cubic-bezier(.16,1,.3,1) both;
+}
+.form-confirmation.is-active { display:flex; }
+.form-confirmation-icon {
+  width:48px; height:48px; border-radius:50%;
+  border:1px solid var(--gold); display:flex; align-items:center; justify-content:center;
+  color:var(--gold);
+}
+.form-confirmation h3 {
+  font-family:'Cormorant Garamond',serif; font-size:clamp(1.6rem,2.2vw,2rem);
+  font-weight:300;
+}
+.form-confirmation h3 em { font-style:italic; color:var(--gold); }
+.form-confirmation p { font-size:.82rem; line-height:1.7; color:var(--mist); max-width:340px; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   PARTNERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.partners-section {
+  padding:88px 52px; text-align:center;
+  border-top:1px solid var(--rule); border-bottom:1px solid var(--rule);
+}
+.partners-eyebrow { margin-bottom:56px; }
+.partners-row {
+  display:flex; justify-content:center; align-items:center; gap:72px; flex-wrap:wrap;
+}
+.partner {
+  font-family:'Cormorant Garamond',serif; font-size:1.35rem; letter-spacing:.1em;
+  text-transform:uppercase; color:rgba(244,241,234,.18); transition:color .3s;
+}
+.partner:hover { color:var(--gold); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   FOOTER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+footer { padding:88px 52px 44px; }
+.footer-grid {
+  display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:60px; margin-bottom:64px;
+}
+.footer-brand-name {
+  font-family:'Cormorant Garamond',serif; font-size:1.35rem; font-weight:300;
+  letter-spacing:.15em; margin-bottom:14px;
+}
+.footer-brand-name b { color:var(--gold); font-weight:300; }
+.footer-brand p { font-size:.78rem; line-height:1.75; color:var(--mist); max-width:275px; }
+.footer-col h4 { font-size:.62rem; letter-spacing:.25em; text-transform:uppercase; color:var(--gold); margin-bottom:20px; }
+.footer-col ul { list-style:none; display:flex; flex-direction:column; gap:10px; }
+.footer-col a { font-size:.78rem; color:var(--mist); text-decoration:none; transition:color .3s; }
+.footer-col a:hover { color:var(--offwhite); }
+.footer-bottom {
+  display:flex; justify-content:space-between; align-items:center;
+  padding-top:36px; border-top:1px solid var(--rule);
+}
+.footer-bottom p { font-size:.7rem; color:rgba(138,133,124,.4); }
+.footer-social { display:flex; gap:26px; }
+.footer-social a {
+  font-size:.62rem; letter-spacing:.2em; text-transform:uppercase;
+  color:var(--mist); text-decoration:none; transition:color .3s;
+}
+.footer-social a:hover { color:var(--gold); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   REVEAL
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.reveal {
+  opacity:0; transform:translateY(36px);
+  transition:opacity .95s cubic-bezier(.16,1,.3,1), transform .95s cubic-bezier(.16,1,.3,1);
+}
+.reveal.on { opacity:1; transform:translateY(0); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   KEYFRAMES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@keyframes fadeUp  { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+@keyframes fadeIn  { from { opacity:0; } to { opacity:1; } }
+@keyframes linePulse { 0%,100% { opacity:.4; } 50% { opacity:1; } }
+@keyframes marquee { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+@keyframes spin    { from { transform:rotate(0); } to { transform:rotate(360deg); } }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   RESPONSIVE
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width:960px) {
+  nav { padding:20px 24px; }
+  .nav-links { display:none; }
+  .hero { padding:0 24px 64px; }
+  .services,.phases-section { padding:88px 24px; }
+  .services-grid { grid-template-columns:1fr; }
+  .service-card { aspect-ratio:4/3; }
+  .stats-row { grid-template-columns:repeat(2,1fr); }
+  .stat { border-right:none; border-bottom:1px solid var(--rule); }
+  .path-section,.booking-section { padding:88px 24px; }
+  .path-inner { grid-template-columns:1fr; gap:64px; }
+  .orbit-wrap { display:none; }
+  .phases-grid { grid-template-columns:1fr; }
+  .phase-card + .phase-card { border-left:1px solid var(--rule); border-top:none; }
+  .phases-grid::before,.phases-grid::after { display:none; }
+  .booking-section { grid-template-columns:1fr; gap:56px; }
+  .form-row-inline,.service-options { grid-template-columns:1fr; }
+  footer { padding:64px 24px 32px; }
+  .footer-grid { grid-template-columns:1fr 1fr; }
+  .partners-section { padding:64px 24px; }
+  .partners-row { gap:40px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cur" aria-hidden="true"></div>
+<div id="ring" aria-hidden="true"></div>
+
+<!-- ━━━━━━━━ NAV ━━━━━━━━ -->
+<nav id="main-nav" role="navigation" aria-label="Main navigation">
+  <a href="#" class="nav-logo" aria-label="Hudson Yards Wellness — home">Hudson Yards <b>Wellness</b></a>
+  <ul class="nav-links">
+    <li><a href="#services">Services</a></li>
+    <li><a href="#path">Your Path</a></li>
+    <li><a href="#phases">Roadmap</a></li>
+    <li><a href="#booking">Inquire</a></li>
+  </ul>
+  <a href="#booking" class="nav-cta" aria-label="Request access to Hudson Yards Wellness">Request Access</a>
+</nav>
+
+<!-- ━━━━━━━━ HERO ━━━━━━━━ -->
+<section class="hero" aria-label="Hero — Hudson Yards Wellness">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-grid" aria-hidden="true"></div>
+  <div class="hero-vline" aria-hidden="true"></div>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow">New York · Hudson Yards · Est. 2024</p>
+    <h1 class="hero-title">
+      Urban<br>
+      <em>Vitality</em><br>
+      Redefined
+    </h1>
+    <div class="hero-meta">
+      <p class="hero-desc">Where architectural brilliance meets total-body wellness. A curated digital ecosystem of elite fitness, recovery, and renewal — built for the modern New Yorker.</p>
+      <a href="#services" class="hero-cta" aria-label="Explore Hudson Yards Wellness services">
+        Explore the Experience
+        <svg width="20" height="10" viewBox="0 0 20 10" fill="none" aria-hidden="true">
+          <path d="M0 5h18M13.5 1l4.5 4-4.5 4" stroke="currentColor" stroke-width="1"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="scroll-ind" aria-hidden="true">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ━━━━━━━━ MARQUEE ━━━━━━━━ -->
+<div class="marquee-wrap" aria-hidden="true">
+  <div class="marquee-track" id="marquee-track">
+    <span class="marquee-item">Equinox</span>
+    <span class="marquee-item">SoulCycle</span>
+    <span class="marquee-item">The Vessel</span>
+    <span class="marquee-item">Hudson River Views</span>
+    <span class="marquee-item">Luxury Recovery</span>
+    <span class="marquee-item">Personalized Wellness</span>
+    <span class="marquee-item">Urban Sanctuary</span>
+    <span class="marquee-item">Elite Fitness</span>
+    <span class="marquee-item">Equinox</span>
+    <span class="marquee-item">SoulCycle</span>
+    <span class="marquee-item">The Vessel</span>
+    <span class="marquee-item">Hudson River Views</span>
+    <span class="marquee-item">Luxury Recovery</span>
+    <span class="marquee-item">Personalized Wellness</span>
+    <span class="marquee-item">Urban Sanctuary</span>
+    <span class="marquee-item">Elite Fitness</span>
+  </div>
+</div>
+
+<!-- ━━━━━━━━ SERVICES ━━━━━━━━ -->
+<section class="services" id="services" aria-labelledby="services-heading">
+  <div class="services-header">
+    <p class="eyebrow reveal">Our Disciplines</p>
+    <h2 class="section-title reveal" id="services-heading">Every dimension<br>of <em>wellness</em></h2>
+  </div>
+
+  <div class="services-grid">
+
+    <!-- Card 1 — Recovery & Biohacking -->
+    <article class="service-card" aria-label="Recovery and Biohacking service">
+      <div class="service-card-photo card-chamber" aria-hidden="true">
+        <div class="scene-elements">
+          <div class="beam" style="top:4%;opacity:.9"></div>
+          <div class="beam" style="top:9%;opacity:.85"></div>
+          <div class="beam" style="top:14%;opacity:.8"></div>
+          <div class="beam" style="top:19%;opacity:.75"></div>
+          <div class="beam" style="top:24%;opacity:.7"></div>
+          <div class="city-window" style="left:22%;right:35%;top:14%;bottom:40%;">
+            <div class="city-window-sky"></div>
+            <div class="city-window-buildings"></div>
+          </div>
+          <div class="floor" style="height:38%"></div>
+          <div style="position:absolute;left:4%;top:20%;width:12%;height:52%;background:linear-gradient(to right,#5a5040,#6a6050);border-radius:4px 4px 0 0;box-shadow:inset -3px 0 8px rgba(0,0,0,.5);"></div>
+          <div style="position:absolute;left:5%;top:26%;width:9%;height:35%;background:rgba(80,110,140,.4);border-radius:2px;border:1px solid rgba(100,140,180,.2);"></div>
+          <div style="position:absolute;left:34%;bottom:30%;width:7%;height:5%;background:radial-gradient(circle,rgba(180,215,255,.8),rgba(120,170,220,.4));border-radius:50%;box-shadow:0 0 20px rgba(140,190,255,.5);"></div>
+          <div class="lounger" style="left:38%;bottom:26%;width:18%;height:12%;"></div>
+          <div class="lounger" style="left:58%;bottom:26%;width:18%;height:12%;"></div>
+          <div style="position:absolute;right:8%;top:15%;width:26%;height:64%;background:linear-gradient(to left,rgba(190,20,5,.15),transparent);"></div>
+          <div style="position:absolute;right:2%;top:38%;width:10%;height:2%;background:#8a7055;"></div>
+          <div style="position:absolute;right:3%;top:30%;width:3%;height:8%;background:#6a5035;border-radius:1px;"></div>
+          <div style="position:absolute;right:6%;top:31%;width:2%;height:7%;background:#7a6040;border-radius:1px;"></div>
+        </div>
+      </div>
+      <div class="card-overlay">
+        <p class="card-num">01</p>
+        <h3 class="card-title">Recovery<br>&amp; Biohacking</h3>
+        <p class="card-desc">Red light therapy, cryotherapy, and advanced recovery protocols with city skyline views. Science-driven restoration at its most refined.</p>
+        <a href="#booking" class="card-link" aria-label="Book a Recovery and Biohacking session">Inquire Now →</a>
+      </div>
+    </article>
+
+    <!-- Card 2 — Pilates & Movement -->
+    <article class="service-card" aria-label="Pilates and Movement service">
+      <div class="service-card-photo card-pilates" aria-hidden="true">
+        <div class="scene-elements">
+          <div class="beam" style="top:3%;"></div>
+          <div class="beam" style="top:8.5%;"></div>
+          <div class="beam" style="top:14%;"></div>
+          <div class="beam" style="top:19.5%;"></div>
+          <div class="beam" style="top:25%;"></div>
+          <div class="beam" style="top:30.5%;"></div>
+          <div class="city-window" style="left:10%;right:5%;top:13%;bottom:38%;">
+            <div class="city-window-sky" style="background:linear-gradient(to bottom,#e8b870 0%,#d09050 28%,#906040 55%,#3c2820 100%);"></div>
+            <div class="city-window-buildings"></div>
+          </div>
+          <div style="position:absolute;right:0;top:0;width:6%;bottom:0;background:repeating-linear-gradient(to bottom,rgba(200,180,140,.15) 0px,rgba(200,180,140,.15) 58px,rgba(0,0,0,.05) 58px,rgba(0,0,0,.05) 60px);"></div>
+          <div class="floor" style="height:40%;background:linear-gradient(to top,#c8a870,#b89458);"></div>
+          <div class="reformer" style="left:6%;bottom:22%;width:50%;opacity:.9;transform:perspective(400px) rotateX(4deg);"></div>
+          <div class="reformer" style="left:14%;bottom:26%;width:48%;opacity:.8;transform:perspective(400px) rotateX(4deg);"></div>
+          <div style="position:absolute;left:45%;bottom:38%;width:12%;height:16%;">
+            <div style="width:90%;height:55%;background:radial-gradient(ellipse,rgba(35,70,20,.9),rgba(25,55,15,.7));border-radius:50% 50% 40% 40%;margin:0 auto;width:90%;"></div>
+            <div style="width:4px;height:40%;background:#6a4820;margin:0 auto;"></div>
+            <div style="width:60%;height:6px;background:#8a6030;margin:0 auto;border-radius:1px;"></div>
+          </div>
+          <div style="position:absolute;right:4%;top:38%;width:4%;height:6%;background:radial-gradient(ellipse,#c89020,#a07010);border-radius:30% 30% 45% 45%;box-shadow:0 0 8px rgba(200,150,30,.3);"></div>
+          <div style="position:absolute;left:20%;bottom:38%;width:5%;height:3.5%;background:#9a7040;border-radius:1px;transform:rotate(-8deg);"></div>
+          <div style="position:absolute;left:55%;bottom:37%;width:4%;height:3%;background:#8a6035;border-radius:1px;transform:rotate(5deg);"></div>
+          <div style="position:absolute;left:75%;bottom:38.5%;width:4.5%;height:3%;background:#9a7040;border-radius:1px;transform:rotate(-3deg);"></div>
+        </div>
+      </div>
+      <div class="card-overlay">
+        <p class="card-num">02</p>
+        <h3 class="card-title">Pilates<br>&amp; Movement</h3>
+        <p class="card-desc">Reformer pilates in a sun-drenched studio with panoramic NYC views. Precision movement for strength, flexibility, and total body alignment.</p>
+        <a href="#booking" class="card-link" aria-label="Book a Pilates and Movement session">Inquire Now →</a>
+      </div>
+    </article>
+
+    <!-- Card 3 — Spa & Thermal -->
+    <article class="service-card" aria-label="Spa and Thermal Suite service">
+      <div class="service-card-photo card-spa" aria-hidden="true">
+        <div class="scene-elements">
+          <div class="beam" style="top:3%;background:linear-gradient(to bottom,#6a3c18,#4a2810,#6a3c18);"></div>
+          <div class="beam" style="top:9%;background:linear-gradient(to bottom,#6a3c18,#4a2810,#6a3c18);"></div>
+          <div class="beam" style="top:15%;background:linear-gradient(to bottom,#6a3c18,#4a2810,#6a3c18);"></div>
+          <div class="beam" style="top:21%;background:linear-gradient(to bottom,#6a3c18,#4a2810,#6a3c18);"></div>
+          <div class="beam" style="top:27%;background:linear-gradient(to bottom,#6a3c18,#4a2810,#6a3c18);"></div>
+          <div style="position:absolute;top:0;left:0;right:0;height:5%;background:linear-gradient(to bottom,rgba(210,140,40,.7),transparent);"></div>
+          <div class="city-window" style="left:2%;right:76%;top:14%;bottom:40%;">
+            <div class="city-window-sky" style="background:linear-gradient(to bottom,#f0b865 0%,#d07a38 30%,#804830 55%,#2c1c14 100%);"></div>
+            <div class="city-window-buildings"></div>
+          </div>
+          <div class="pool" style="width:48%;top:40%;"></div>
+          <div style="position:absolute;left:0;right:52%;top:40%;height:3px;background:linear-gradient(to right,rgba(195,155,90,.6),rgba(150,115,65,.3));"></div>
+          <div style="position:absolute;left:28%;right:8%;top:18%;bottom:42%;background:linear-gradient(to bottom,#7a4c22,#5a3415,#8a5828);border-radius:2px;overflow:hidden;">
+            <div style="position:absolute;inset:0;background:radial-gradient(ellipse at 50% 70%,rgba(220,130,40,.35),transparent 60%);"></div>
+            <div style="position:absolute;bottom:15%;left:5%;right:5%;height:12%;background:#9a6030;"></div>
+            <div style="position:absolute;bottom:32%;left:5%;right:5%;height:10%;background:#8a5528;"></div>
+            <div style="position:absolute;bottom:47%;left:5%;right:5%;height:8%;background:#7a4c22;"></div>
+            <div style="position:absolute;left:0;top:0;width:6px;height:100%;background:#3a2010;"></div>
+            <div style="position:absolute;right:0;top:0;width:6px;height:100%;background:#3a2010;"></div>
+          </div>
+          <div class="floor" style="height:42%;left:48%;background:linear-gradient(to top,#c0986a,#b08050);"></div>
+          <div style="position:absolute;right:2%;bottom:28%;width:44%;height:10%;background:linear-gradient(to bottom,#e0d0b4,#ccc0a0);border-radius:2px;box-shadow:0 3px 10px rgba(0,0,0,.5);"></div>
+          <div style="position:absolute;right:4%;bottom:36%;width:40%;height:9%;background:linear-gradient(to bottom,#d8c8a8,#c4b490);border-radius:2px;box-shadow:0 3px 8px rgba(0,0,0,.4);opacity:.85;"></div>
+          <div style="position:absolute;right:6%;bottom:44%;width:10%;height:16%;">
+            <div style="width:90%;height:55%;background:radial-gradient(ellipse,rgba(32,65,18,.9),rgba(22,50,12,.7));border-radius:50% 50% 40% 40%;margin:0 auto;"></div>
+            <div style="width:4px;height:35%;background:#5a3818;margin:0 auto;"></div>
+            <div style="width:55%;height:5px;background:#7a5428;margin:0 auto;border-radius:1px;"></div>
+          </div>
+          <div style="position:absolute;left:20%;bottom:40%;width:8%;height:13%;">
+            <div style="width:90%;height:55%;background:radial-gradient(ellipse,rgba(30,62,17,.85),rgba(20,48,12,.7));border-radius:50% 50% 40% 40%;margin:0 auto;"></div>
+            <div style="width:3px;height:35%;background:#5a3818;margin:0 auto;"></div>
+            <div style="width:50%;height:4px;background:#7a5428;margin:0 auto;border-radius:1px;"></div>
+          </div>
+          <div style="position:absolute;left:12%;top:35%;width:18%;height:8%;background:radial-gradient(ellipse,rgba(200,190,175,.15),transparent);filter:blur(4px);"></div>
+          <div style="position:absolute;right:48%;bottom:25%;width:6%;height:8%;background:#8a6840;border-radius:50% 50% 2px 2px;"></div>
+          <div style="position:absolute;right:46%;bottom:33%;width:3%;height:5%;background:radial-gradient(ellipse,#c89020,#a07010);border-radius:30% 30% 45% 45%;"></div>
+        </div>
+      </div>
+      <div class="card-overlay">
+        <p class="card-num">03</p>
+        <h3 class="card-title">Spa<br>&amp; Thermal</h3>
+        <p class="card-desc">Indoor heated pool, Finnish sauna, and private loungers overlooking the Manhattan skyline. Total restoration from the inside out.</p>
+        <a href="#booking" class="card-link" aria-label="Book a Spa and Thermal Suite session">Inquire Now →</a>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ━━━━━━━━ STATS ━━━━━━━━ -->
+<div class="stats-row" role="region" aria-label="Platform metrics">
+  <div class="stat reveal"><div class="stat-num">47+</div><div class="stat-label">Wellness Partners</div></div>
+  <div class="stat reveal"><div class="stat-num">12K</div><div class="stat-label">Members</div></div>
+  <div class="stat reveal"><div class="stat-num">&lt;1s</div><div class="stat-label">Load Time Target</div></div>
+  <div class="stat reveal"><div class="stat-num">360°</div><div class="stat-label">Wellness Coverage</div></div>
+</div>
+
+<!-- ━━━━━━━━ WELLNESS PATH ━━━━━━━━ -->
+<section class="path-section" id="path" aria-labelledby="path-heading">
+  <div class="path-inner">
+    <div>
+      <p class="eyebrow reveal">Intelligent Personalization</p>
+      <h2 class="section-title reveal" id="path-heading" style="margin-bottom:56px;">Your<br><em>Wellness Path</em></h2>
+
+      <div class="path-steps" id="path-steps">
+        <div class="path-step reveal" data-step="1">
+          <span class="step-num">01</span>
+          <div class="step-content">
+            <h3>Discovery Assessment</h3>
+            <p>A comprehensive intake mapping your goals, fitness baseline, lifestyle rhythms, and recovery needs — building a complete, dynamic wellness profile.</p>
+          </div>
+        </div>
+        <div class="path-step reveal" data-step="2">
+          <span class="step-num">02</span>
+          <div class="step-content">
+            <h3>Curated Recommendation</h3>
+            <p>Our ML-powered engine synthesizes your profile with live availability across all partners — leveraging collaborative filtering to craft your ideal weekly program.</p>
+          </div>
+        </div>
+        <div class="path-step reveal" data-step="3">
+          <span class="step-num">03</span>
+          <div class="step-content">
+            <h3>Seamless Activation</h3>
+            <p>One membership. One platform. Book, track, and adapt your path via facilitated API integrations with Equinox, SoulCycle, and every Hudson Yards wellness partner.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive orbit -->
+    <div class="orbit-wrap" id="orbit-wrap" aria-hidden="true">
+      <div class="orbit orbit-1" id="orbit-ring-1">
+        <div class="orbit-dot" data-step="1" title="Step 1: Discovery"></div>
+        <div class="orbit-dot" data-step="2" title="Step 2: Recommendation"></div>
+        <div class="orbit-dot" data-step="3" title="Step 3: Activation"></div>
+      </div>
+      <div class="orbit orbit-2"></div>
+      <div class="orbit orbit-3"></div>
+      <div class="orbit-center">
+        <span>You,<br>Centered</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━ PHASES ━━━━━━━━ -->
+<section class="phases-section" id="phases" aria-labelledby="phases-heading">
+  <p class="eyebrow reveal">Implementation Roadmap</p>
+  <h2 class="section-title reveal" id="phases-heading">From concept<br>to <em>launch</em></h2>
+
+  <div class="phases-grid">
+    <div class="phase-card phase-active reveal">
+      <p class="phase-num">Phase 01</p>
+      <h3 class="phase-title">Planning &amp; Design</h3>
+      <p class="phase-duration">Month 1</p>
+      <div class="phase-items">
+        <div class="phase-item">Discovery, scope definition &amp; stakeholder alignment</div>
+        <div class="phase-item">UX wireframes &amp; interactive prototypes</div>
+        <div class="phase-item">Tech stack rationale &amp; API architecture</div>
+        <div class="phase-item">Budget breakdown &amp; developer allocation</div>
+      </div>
+    </div>
+    <div class="phase-card reveal">
+      <p class="phase-num">Phase 02</p>
+      <h3 class="phase-title">Build &amp; Test</h3>
+      <p class="phase-duration">Months 2 – 3.5</p>
+      <div class="phase-items">
+        <div class="phase-item">MVP: booking portal &amp; wellness path engine</div>
+        <div class="phase-item">Facilitated API integrations (Equinox, SoulCycle)</div>
+        <div class="phase-item">Database, auth (JWT/OAuth), WebSockets</div>
+        <div class="phase-item">Unit, E2E testing (Cypress) &amp; security audits</div>
+      </div>
+    </div>
+    <div class="phase-card reveal">
+      <p class="phase-num">Phase 03</p>
+      <h3 class="phase-title">Launch &amp; Optimise</h3>
+      <p class="phase-duration">Month 3.5 – 4</p>
+      <div class="phase-items">
+        <div class="phase-item">Beta user feedback &amp; A/B testing</div>
+        <div class="phase-item">SEO deployment &amp; Core Web Vitals audit</div>
+        <div class="phase-item">Analytics suite (GA4, Hotjar, Mixpanel)</div>
+        <div class="phase-item">Post-launch support plan &amp; quarterly updates</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━ BOOKING ━━━━━━━━ -->
+<section class="booking-section" id="booking" aria-labelledby="booking-heading">
+  <div>
+    <p class="eyebrow reveal">Begin Your Journey</p>
+    <h2 class="section-title reveal" id="booking-heading">Request<br><em>Access</em></h2>
+    <p class="reveal" style="font-size:.84rem;line-height:1.75;color:var(--mist);max-width:370px;margin-top:24px;">Membership at Hudson Yards Wellness is by inquiry. Complete the form and our concierge team will curate your first experience within 24 hours.</p>
+  </div>
+
+  <div class="form-wrap reveal" role="form" aria-label="Membership inquiry form">
+
+    <!-- Progress indicator -->
+    <div class="form-progress" aria-hidden="true">
+      <div class="form-progress-step is-current" data-pi="1">
+        <div class="form-step-dot"></div>
+        Identity
+      </div>
+      <div class="form-progress-step" data-pi="2">
+        <div class="form-step-dot"></div>
+        Interest
+      </div>
+      <div class="form-progress-step" data-pi="3">
+        <div class="form-step-dot"></div>
+        Schedule
+      </div>
+    </div>
+
+    <!-- Step 1: Identity -->
+    <div class="form-step is-active" data-step="1">
+      <p class="form-step-question">Who shall we<br><em>address?</em></p>
+      <div class="form-row-inline" style="margin-bottom:28px;">
+        <div class="form-group">
+          <label for="f-first">First name</label>
+          <input id="f-first" type="text" placeholder="Alexandra" autocomplete="given-name">
+        </div>
+        <div class="form-group">
+          <label for="f-last">Last name</label>
+          <input id="f-last" type="text" placeholder="Chen" autocomplete="family-name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="f-email">Email address</label>
+        <input id="f-email" type="email" placeholder="hello@example.com" autocomplete="email">
+      </div>
+      <div class="form-nav">
+        <button class="form-btn-back" disabled aria-label="Previous step">← Back</button>
+        <button class="form-btn-next" aria-label="Proceed to service selection">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Service interest -->
+    <div class="form-step" data-step="2">
+      <p class="form-step-question">What calls<br>to <em>you?</em></p>
+      <div class="service-options" role="radiogroup" aria-label="Select a wellness service">
+        <div class="service-option" data-val="Recovery &amp; Biohacking" role="radio" aria-checked="false" tabindex="0">
+          <span class="service-option-name">Recovery &amp; Biohacking</span>
+          <span class="service-option-sub">Red light · Cryo · Restoration</span>
+        </div>
+        <div class="service-option" data-val="Pilates &amp; Movement" role="radio" aria-checked="false" tabindex="0">
+          <span class="service-option-name">Pilates &amp; Movement</span>
+          <span class="service-option-sub">Reformer · Mobility · Strength</span>
+        </div>
+        <div class="service-option" data-val="Spa &amp; Thermal" role="radio" aria-checked="false" tabindex="0">
+          <span class="service-option-name">Spa &amp; Thermal</span>
+          <span class="service-option-sub">Pool · Sauna · Hydrotherapy</span>
+        </div>
+        <div class="service-option" data-val="Full Membership" role="radio" aria-checked="false" tabindex="0">
+          <span class="service-option-name">Full Membership</span>
+          <span class="service-option-sub">All access · Curated path</span>
+        </div>
+      </div>
+      <div class="form-nav" style="margin-top:32px;">
+        <button class="form-btn-back" aria-label="Back to identity step">← Back</button>
+        <button class="form-btn-next" aria-label="Proceed to scheduling">Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Scheduling -->
+    <div class="form-step" data-step="3">
+      <p class="form-step-question">When would<br>you like to <em>begin?</em></p>
+      <div class="form-row-inline" style="margin-bottom:28px;">
+        <div class="form-group">
+          <label for="f-date">Preferred date</label>
+          <input id="f-date" type="date" aria-label="Preferred date">
+        </div>
+        <div class="form-group">
+          <label for="f-time">Preferred time</label>
+          <select id="f-time" aria-label="Preferred time of day">
+            <option value="">Select a time</option>
+            <option>Morning · 6am – 9am</option>
+            <option>Midday · 10am – 12pm</option>
+            <option>Afternoon · 1pm – 4pm</option>
+            <option>Evening · 5pm – 8pm</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-nav">
+        <button class="form-btn-back" aria-label="Back to service selection">← Back</button>
+        <button class="form-btn-next" id="form-submit-btn" aria-label="Submit your inquiry">Submit Inquiry →</button>
+      </div>
+    </div>
+
+    <!-- Confirmation -->
+    <div class="form-confirmation" id="form-confirmation" role="status" aria-live="polite">
+      <div class="form-confirmation-icon" aria-hidden="true">
+        <svg width="18" height="14" viewBox="0 0 18 14" fill="none">
+          <path d="M1 7l5.5 5.5L17 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h3>Inquiry <em>received.</em></h3>
+      <p>Our concierge team will personally reach out within 24 hours to curate your Hudson Yards Wellness experience.</p>
+      <p class="form-note">Your privacy is paramount. All information is handled in accordance with HIPAA, GDPR, and CCPA standards.</p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ━━━━━━━━ PARTNERS ━━━━━━━━ -->
+<section class="partners-section" id="partners" aria-label="Ecosystem partners">
+  <p class="eyebrow partners-eyebrow reveal">Our Ecosystem Partners</p>
+  <div class="partners-row">
+    <div class="partner reveal">Equinox</div>
+    <div class="partner reveal">SoulCycle</div>
+    <div class="partner reveal">The Vessel</div>
+    <div class="partner reveal">Edge NYC</div>
+    <div class="partner reveal">Hudson Yards</div>
+    <div class="partner reveal">Whole Foods</div>
+  </div>
+</section>
+
+<!-- ━━━━━━━━ FOOTER ━━━━━━━━ -->
+<footer role="contentinfo">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div class="footer-brand-name">Hudson Yards <b>Wellness</b></div>
+      <p>The premier digital gateway to New York's most exclusive wellness ecosystem. Built at the intersection of architecture, technology, and human vitality.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Services</h4>
+      <ul>
+        <li><a href="#">Recovery &amp; Biohacking</a></li>
+        <li><a href="#">Pilates &amp; Movement</a></li>
+        <li><a href="#">Spa &amp; Thermal</a></li>
+        <li><a href="#">Performance Fitness</a></li>
+        <li><a href="#">Nutrition Guidance</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <ul>
+        <li><a href="#">Wellness Path</a></li>
+        <li><a href="#">Membership</a></li>
+        <li><a href="#">API Integrations</a></li>
+        <li><a href="#">Mobile App</a></li>
+        <li><a href="#">WCAG 2.1 Accessibility</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <ul>
+        <li><a href="#">20 Hudson Yards</a></li>
+        <li><a href="#">New York, NY 10001</a></li>
+        <li><a href="mailto:hello@hywellness.com">hello@hywellness.com</a></li>
+        <li><a href="tel:+12120000000">+1 (212) 000-0000</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Hudson Yards Wellness. All rights reserved. HIPAA · GDPR · CCPA Compliant.</p>
+    <div class="footer-social">
+      <a href="#" aria-label="Hudson Yards Wellness on Instagram">Instagram</a>
+      <a href="#" aria-label="Hudson Yards Wellness on LinkedIn">LinkedIn</a>
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SCRIPTS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+<script>
+(function() {
+'use strict';
+
+/* ─────────────────────────────────────
+   1. CURSOR — safe, GPU-composited
+   Only activates on hover-capable, pointer devices.
+   Uses @media (hover:hover) guard in CSS too.
+───────────────────────────────────── */
+const mq = window.matchMedia('(hover: hover) and (pointer: fine)');
+if (mq.matches) {
+  document.documentElement.classList.add('js-cursor-active');
+  const cur  = document.getElementById('cur');
+  const ring = document.getElementById('ring');
+  let mx = window.innerWidth / 2;
+  let my = window.innerHeight / 2;
+  let rx = mx, ry = my;
+  let visible = false;
+
+  // Show cursors once mouse moves
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    if (!visible) {
+      cur.style.opacity = '1';
+      ring.style.opacity = '1';
+      visible = true;
+    }
+    // Dot snaps immediately
+    cur.style.left = mx + 'px';
+    cur.style.top  = my + 'px';
+  }, { passive: true });
+
+  // Ring follows with gentle lag (rAF loop)
+  (function lagRing() {
+    rx += (mx - rx) * 0.115;
+    ry += (my - ry) * 0.115;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(lagRing);
+  })();
+
+  // Hover state on interactive elements
+  const interactives = 'a, button, input, select, .service-card, .phase-card, .service-option, .orbit-dot';
+  document.querySelectorAll(interactives).forEach(el => {
+    el.addEventListener('mouseenter', () => { cur.classList.add('is-hover'); ring.classList.add('is-hover'); });
+    el.addEventListener('mouseleave', () => { cur.classList.remove('is-hover'); ring.classList.remove('is-hover'); });
+  });
+
+  // Hide on leave
+  document.addEventListener('mouseleave', () => {
+    cur.style.opacity = '0'; ring.style.opacity = '0'; visible = false;
+  });
+  document.addEventListener('mouseenter', () => {
+    if (visible) { cur.style.opacity = '1'; ring.style.opacity = '1'; }
+  });
+}
+
+/* ─────────────────────────────────────
+   2. SCROLL REVEAL — IntersectionObserver
+───────────────────────────────────── */
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('on');
+      observer.unobserve(entry.target); // fire once
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  // Stagger siblings within the same direct parent
+  const siblings = Array.from(el.parentElement.children).filter(c => c.classList.contains('reveal'));
+  const idx = siblings.indexOf(el);
+  el.style.transitionDelay = (idx * 0.12) + 's';
+  observer.observe(el);
+});
+
+/* ─────────────────────────────────────
+   3. NAV — scroll behaviour
+───────────────────────────────────── */
+const nav = document.getElementById('main-nav');
+let lastY = 0;
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 60);
+  lastY = y;
+}, { passive: true });
+
+/* ─────────────────────────────────────
+   4. HERO PARALLAX
+───────────────────────────────────── */
+const heroGrid = document.querySelector('.hero-grid');
+const heroVline = document.querySelector('.hero-vline');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  if (y < window.innerHeight) {
+    heroGrid.style.transform  = `translateY(${y * 0.26}px)`;
+    heroVline.style.transform = `translateY(${y * 0.13}px)`;
+  }
+}, { passive: true });
+
+/* ─────────────────────────────────────
+   5. MARQUEE — viewport-relative speed
+   Target: ~80px/s regardless of screen width.
+───────────────────────────────────── */
+(function setMarqueeSpeed() {
+  const track = document.getElementById('marquee-track');
+  if (!track) return;
+  const trackW = track.scrollWidth / 2; // one set width
+  const speed  = 80; // px per second
+  const dur    = trackW / speed;
+  track.style.setProperty('--marquee-dur', dur + 's');
+  // Also set on parent via CSS var
+  document.querySelector('.marquee-track').style.animationDuration = dur + 's';
+})();
+
+/* ─────────────────────────────────────
+   6. INTERACTIVE ORBIT
+   Hovering a path step activates the
+   corresponding orbit dot and dims others.
+───────────────────────────────────── */
+const pathSteps = document.querySelectorAll('.path-step');
+const orbitDots = document.querySelectorAll('.orbit-dot');
+const stepsWrap = document.getElementById('path-steps');
+
+function activateStep(num) {
+  stepsWrap.classList.add('has-active');
+  pathSteps.forEach(s => s.classList.toggle('is-active', s.dataset.step === num));
+  orbitDots.forEach(d => d.classList.toggle('is-active', d.dataset.step === num));
+}
+function clearActive() {
+  stepsWrap.classList.remove('has-active');
+  pathSteps.forEach(s => s.classList.remove('is-active'));
+  orbitDots.forEach(d => d.classList.remove('is-active'));
+}
+
+// Hover on text steps → light up dot
+pathSteps.forEach(step => {
+  step.addEventListener('mouseenter', () => activateStep(step.dataset.step));
+  step.addEventListener('mouseleave', clearActive);
+});
+
+// Hover on orbit dot → highlight step
+orbitDots.forEach(dot => {
+  dot.addEventListener('mouseenter', () => activateStep(dot.dataset.step));
+  dot.addEventListener('mouseleave', clearActive);
+});
+
+/* ─────────────────────────────────────
+   7. MULTI-STEP FORM
+───────────────────────────────────── */
+let currentStep = 1;
+const totalSteps = 3;
+const steps    = document.querySelectorAll('.form-step');
+const piSteps  = document.querySelectorAll('.form-progress-step');
+const confirm  = document.getElementById('form-confirmation');
+
+function showStep(n) {
+  steps.forEach((s, i) => {
+    s.classList.toggle('is-active', i + 1 === n);
+  });
+  piSteps.forEach((p, i) => {
+    p.classList.remove('is-current', 'is-done');
+    if (i + 1 === n)  p.classList.add('is-current');
+    if (i + 1  <  n)  p.classList.add('is-done');
+  });
+  currentStep = n;
+}
+
+// Next buttons
+document.querySelectorAll('.form-btn-next').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (currentStep < totalSteps) {
+      showStep(currentStep + 1);
+    } else {
+      // Final submit
+      steps.forEach(s => s.classList.remove('is-active'));
+      piSteps.forEach(p => { p.classList.remove('is-current'); p.classList.add('is-done'); });
+      confirm.classList.add('is-active');
+      document.querySelector('.form-progress').style.opacity = '.4';
+    }
+  });
+});
+
+// Back buttons
+document.querySelectorAll('.form-btn-back').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (currentStep > 1) showStep(currentStep - 1);
+  });
+});
+
+// Service option selection (step 2)
+document.querySelectorAll('.service-option').forEach(opt => {
+  opt.addEventListener('click', () => {
+    document.querySelectorAll('.service-option').forEach(o => {
+      o.classList.remove('is-selected');
+      o.setAttribute('aria-checked', 'false');
+    });
+    opt.classList.add('is-selected');
+    opt.setAttribute('aria-checked', 'true');
+  });
+  // Keyboard support
+  opt.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); opt.click(); }
+  });
+});
+
+/* ─────────────────────────────────────
+   8. PHASES — highlight active on scroll
+───────────────────────────────────── */
+const phaseCards = document.querySelectorAll('.phase-card');
+const phaseObs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      phaseCards.forEach(c => c.classList.remove('phase-active'));
+      e.target.classList.add('phase-active');
+    }
+  });
+}, { threshold: 0.6, rootMargin: '-20% 0px -20% 0px' });
+phaseCards.forEach(c => phaseObs.observe(c));
+
+})(); // end IIFE
+</script>
+</body>
+</html>
